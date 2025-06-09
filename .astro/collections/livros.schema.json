@@ -1,0 +1,67 @@
+{
+  "$ref": "#/definitions/livros",
+  "definitions": {
+    "livros": {
+      "type": "object",
+      "properties": {
+        "titulo": {
+          "type": "string"
+        },
+        "autor": {
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "idioma": {
+          "type": "string"
+        },
+        "ano": {
+          "type": "string"
+        },
+        "anoDeLeitura": {
+          "type": "number"
+        },
+        "mesDeLeitura": {
+          "type": "string",
+          "enum": [
+            "janeiro",
+            "fevereiro",
+            "março",
+            "abril",
+            "maio",
+            "junho",
+            "julho",
+            "agosto",
+            "setembro",
+            "outubro",
+            "novembro",
+            "dezembro"
+          ]
+        },
+        "slug": {
+          "type": "string"
+        },
+        "imagemURL": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "titulo",
+        "autor",
+        "id",
+        "idioma",
+        "ano",
+        "anoDeLeitura",
+        "mesDeLeitura",
+        "slug",
+        "imagemURL"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
