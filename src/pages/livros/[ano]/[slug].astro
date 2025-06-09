@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets"
+import Layout from "../../../layouts/Layout.astro";
+import BotaoVoltar from "../../../components/BotaoVoltar.astro";
+
+export async function getStaticPaths() {
+    const livros = await getCollection('livros');
+
+    return livros.map((livro) => ({
+        params: {
+            ano: String(livro.data.anoDeLeitura),
+            slug: livro.data.slug,
+        }
+    }));
+}
+
+const { ano, slug } = Astro.params;
+const  todosLivros  = await getCollection('livros');
+
+const livro = todosLivros.find(
+    (livro) => String(livro.data.anoDeLeitura) === ano && 
+    livro.data.slug === slug
+);
+
+if (!livro) {
+    throw new Error(`Livro com slug ${slug} e ano ${ano} não encontrado `);
+}
+---
+
+<Layout>
+    <section>
+        <div class="m-auto p-2 bg-amber-400">
+            <Image 
+                src={livro.data.imagemURL}
+                alt={`${livro.data.titulo} - ${livro.data.autor}`}
+                width={300}
+                height={450}
+                class="my-2 m-auto"
+            />
+            <h2 class="my-2 text-center text-3xl font-bolder">{livro.data.titulo} ({livro.data.ano})</h2>
+            <div class="rounded-md border border-amber-950 bg-amber-950 text-amber-100">
+                <div class="p-2">
+                    <p class="my-2">Autor: {livro.data.autor}</p>
+                    <p class="my-2 capitalize">Data de leitura: {livro.data.mesDeLeitura} de {livro.data.anoDeLeitura}</p>
+                </div>
+                <article>
+                    <div class="p-2 rounded-t-none rounded-b-md bg-white text-black prose prose-lg text-md text-justify">
+                        {livro.body}
+                    </div>
+                </article>
+            </div>
+            <BotaoVoltar />
+        </div>
+    </section>
+</Layout>

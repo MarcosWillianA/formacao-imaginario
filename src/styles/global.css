@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+* {
+    font-family: "Open Sans", sans-serif;
+}
+
+h1, h2, h3, h4 {
+    font-family: "Lora", serif;
+}
+
+.font-lora {
+    font-family: "Lora", serif;
+}

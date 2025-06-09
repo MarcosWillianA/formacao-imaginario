@@ -1,0 +1,62 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection  } from "astro:content";
+import { Image }  from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import BotaoVoltar from "../../components/BotaoVoltar.astro";
+
+export async function getStaticPaths() {
+    const livros = await getCollection('livros');
+
+    const anosUnicos = Array.from(
+        new Set(livros.map((livro) => livro.data.anoDeLeitura))
+    );
+
+    return anosUnicos.map((ano) => ({
+        params: { ano: String(ano) }
+    }));
+}
+
+const { ano } = Astro.params; 
+const todosLivros = await getCollection('livros');
+const livrosDoAno = todosLivros.filter(
+    (livro) => String(livro.data.anoDeLeitura) === ano
+); 
+livrosDoAno.sort((a, b) => a.data.id - b.data.id);
+
+
+---
+
+<Layout>
+    <section>
+        <div class="p-2 bg-amber-400">
+            <h2 class="text-3xl text-center uppercase">Livros de {ano}</h2>
+            <ul class="my-2 flex flex-wrap gap-2">
+                {livrosDoAno.map((livro) => (
+                    <li class="flex flex-col w-[300px] m-auto mt-2 rounded-md border border-amber-950 bg-amber-100 hover:shadow-md">
+                        <a href={`/livros/${ano}/${livro.data.slug}/`} class="flex flex-col flex-1">
+                            <div class="p-2 rounded-t-md rounded-b-none bg-amber-950 text-amber-100 text-center capitalize">
+                                <p>
+                                    {livro.data.mesDeLeitura}
+                                </p>
+                            </div>
+                            <Image
+                                src={livro.data.imagemURL} 
+                                alt={`${livro.data.titulo} - ${livro.data.autor}`}
+                                width={300}
+                                height={450} 
+                            />
+                            <div class="p-2 rounded-t-none rounded-b-md bg-amber-950 text-amber-100 text-center capitalize">
+                                <p class="text-sm">
+                                    {livro.data.titulo} - {livro.data.autor}
+                                </p>
+                                
+                            </div>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+            <BotaoVoltar />
+        </div>
+    </section>
+</Layout>

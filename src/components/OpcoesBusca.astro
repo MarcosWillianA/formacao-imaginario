@@ -1,0 +1,19 @@
+---
+const opcoesBusca = [
+    { tipo: 'listas anuais', href: '/'},
+    { tipo: 'autores', href: '/livros/autores'},
+    { tipo: 'idioma', href: '/livros/idiomas'}
+]
+---
+<div class="w-full ">
+    <h2 class="my-2 py-2 text-center text-white text-3xl">Listas de Leitura</h2>
+    <ul class="flex justify-between max-w-80 w-full m-auto rounded-t-sm rounded-b-none bg-amber-400">
+        {opcoesBusca.map(opcao => (
+            <li class="block p-2 hover:bg-amber-300 hover:rounded-t-sm hover:rounded-b-none active:bg-amber-300 capitalize">
+                <a href={opcao.href}>
+                    {opcao.tipo}
+                </a>
+            </li>
+        ))}
+    </ul>
+</div>

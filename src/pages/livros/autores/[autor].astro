@@ -1,0 +1,62 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Layout from "../../../layouts/Layout.astro";
+import BotaoVoltar from "../../../components/BotaoVoltar.astro";
+
+export async function getStaticPaths() {
+    const livros = await getCollection('livros');
+
+    const autores = [... new Set(livros.map(l => l.data.autor))];
+
+    return autores.map(autor => ({ 
+        params: {
+            autor: autor.toLowerCase().replace(/\s+/g, '-')
+        },
+        props: {
+            nomeOriginal: autor
+        }
+    }));
+}
+
+const { autor } = Astro.params;
+const livros = await getCollection('livros');
+const livrosDoAutor = livros.filter( 
+    l => l.data.autor.toLowerCase().replace(/\s+/g, '-') === autor
+);
+
+---
+
+<Layout>
+    <section>
+        <div class="m-auto p-2 bg-amber-400">
+            <h2 class="text-center text-3xl font-bolder">Livros de {livrosDoAutor[0]?.data.autor}</h2>
+            <ul class="flex flex-wrap gap-2 justify-evenly">
+                {livrosDoAutor.map((livro) => (
+                    <li class="my-2 rounded-md border border-amber-950 bg-amber-950 text-amber-100">
+                        <a href={`/livros/${livro.data.anoDeLeitura}/${livro.data.slug}/`}>
+                            <div class="p-2 rounded-t-md rounded-b-none">
+                                <p class="text-center text-md">
+                                    {livro.data.titulo} ({ livro.data.ano})
+                                </p>
+                            </div>
+                            <Image 
+                                class="m-auto"
+                                src={livro.data.imagemURL} 
+                                alt={`${livro.data.titulo} - ${livro.data.autor}`}
+                                width={300}
+                                height={450} 
+                            />
+                            <div class="p-2 rounded-t-none rounded-b-md">
+                                <p class="text-center text-md">
+                                    Leitura: {livro.data.mesDeLeitura} de {livro.data.anoDeLeitura}
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+            <BotaoVoltar />
+        </div>
+    </section>
+</Layout>

@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const livros = await getCollection('livros');
+const idiomasSet = new Set();
+
+for (const livro of livros) {
+    idiomasSet.add(livro.data.idioma);
+}
+
+const idiomas = Array.from(idiomasSet).sort();
+---
+
+<Layout>
+    <section>
+        <div class="m-auto p-2 bg-amber-400">
+            <h3 class="text-center text-2xl font-bolder">Idiomas</h3>
+            <ul class="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:divide-none sm:gap-2 rounded bg-white divide-y divide-amber-200">
+                {idiomas.map(idioma => (
+                    <li class="py-2 px-4 hover:bg-amber-100 active:bg-amber-300 cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md rounded capitalize">
+                        <span class="text-amber-700">📖</span>
+                        <a href={`/livros/idiomas/${idioma.toLowerCase()}`}>
+                            {idioma}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </section>
+</Layout>

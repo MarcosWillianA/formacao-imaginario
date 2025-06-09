@@ -1,0 +1,42 @@
+---
+import { ClientRouter } from "astro:transitions";
+import Cabecalho from "../components/Cabecalho.astro";
+import MenuPrincipal from "../components/MenuPrincipal.astro";
+import OpcoesBusca from "../components/OpcoesBusca.astro";
+import Rodape from "../components/Rodape.astro";
+import "./src/styles/global.css";
+---
+
+<!doctype html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+			rel="stylesheet"
+		/>
+		<ClientRouter />
+		<title>Formação do Imaginário</title>
+	</head>
+	<body class="bg-[url('/assets/fundos/papel-velho.webp')] bg-cover min-h-full overflow-x-hidden text-gray-800">
+		<header>
+			<nav>
+				<MenuPrincipal />
+			</nav>
+			<Cabecalho />
+		</header>
+		<main class="max-w-screen-xl min-h-screen mx-auto px-4 sm:px-6 lg:px-8">
+			<nav>
+				<OpcoesBusca />
+			</nav>
+			<slot />
+		</main>
+		<footer>
+			<Rodape />
+		</footer>
+	</body>
+</html>
